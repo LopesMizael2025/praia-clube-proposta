@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Praia Clube — Proposta de Nova Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ DESIGN TOKENS ============ */
+:root{
+  --amarelo:#FFDC0E;
+  --amarelo-escuro:#E8C400;
+  --preto:#0D0D0F;
+  --preto-2:#17171A;
+  --preto-3:#212126;
+  --branco:#FFFFFF;
+  --cinza-bg:#F5F5F2;
+  --cinza-linha:#E6E6E1;
+  --cinza-texto:#5C5C63;
+  --cinza-claro:#9A9AA1;
+  --radius:20px;
+  --radius-sm:12px;
+  --font-display:'Archivo',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --shadow:0 10px 40px rgba(13,13,15,.10);
+  --shadow-hover:0 18px 50px rgba(13,13,15,.16);
+  --maxw:1200px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--preto);background:var(--branco);line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+section{padding:96px 0}
+h1,h2,h3,h4{font-family:var(--font-display);line-height:1.08;letter-spacing:-.01em}
+
+/* Section headers */
+.kicker{display:inline-flex;align-items:center;gap:8px;font:700 12px/1 var(--font-display);letter-spacing:.18em;text-transform:uppercase;color:var(--preto);background:var(--amarelo);padding:8px 14px;border-radius:999px;margin-bottom:18px}
+.kicker.ghost{background:transparent;border:1.5px solid var(--amarelo);color:var(--amarelo)}
+.sec-title{font-size:clamp(30px,4.2vw,48px);font-weight:800;text-transform:uppercase}
+.sec-sub{margin-top:12px;max-width:560px;color:var(--cinza-texto);font-size:16px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px;flex-wrap:wrap}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;font:700 14px/1 var(--font-display);letter-spacing:.06em;text-transform:uppercase;padding:16px 28px;border-radius:999px;transition:.25s;cursor:pointer;border:0}
+.btn .arr{transition:.25s}
+.btn:hover .arr{transform:translateX(4px)}
+.btn-yellow{background:var(--amarelo);color:var(--preto)}
+.btn-yellow:hover{background:var(--amarelo-escuro);transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,220,14,.35)}
+.btn-dark{background:var(--preto);color:var(--branco)}
+.btn-dark:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.btn-ghost{background:transparent;color:var(--branco);border:1.5px solid rgba(255,255,255,.4)}
+.btn-ghost:hover{border-color:var(--amarelo);color:var(--amarelo)}
+.btn-link{font:700 13px var(--font-display);letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;border-bottom:2px solid var(--amarelo);padding-bottom:4px;transition:.2s}
+.btn-link:hover{gap:12px}
+
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.on{opacity:1;transform:none}
+
+/* ============ TOPBAR + HEADER ============ */
+.topbar{background:var(--preto);color:var(--cinza-claro);font-size:12.5px;padding:8px 0}
+.topbar .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.topbar a{color:var(--amarelo);font-weight:600}
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--cinza-linha);transition:.3s}
+header.scrolled{box-shadow:0 6px 30px rgba(13,13,15,.08)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+.logo{display:flex;align-items:center;gap:12px;font:800 20px var(--font-display);text-transform:uppercase;letter-spacing:-.02em}
+.logo-mark{width:44px;height:44px;border-radius:12px;background:var(--preto);display:grid;place-items:center;color:var(--amarelo);font:900 15px var(--font-display)}
+.logo small{display:block;font:600 10px var(--font-body);letter-spacing:.22em;color:var(--cinza-texto)}
+.menu{display:flex;gap:6px;list-style:none}
+.menu a{font:600 13.5px var(--font-display);letter-spacing:.05em;text-transform:uppercase;padding:10px 14px;border-radius:999px;transition:.2s}
+.menu a:hover{background:var(--cinza-bg);color:var(--preto)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.nav-cta .btn{padding:12px 20px;font-size:12.5px}
+.burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer}
+.burger span{display:block;height:2.5px;background:var(--preto);margin:5px 8px;border-radius:2px;transition:.3s}
+.mobile-menu{display:none;background:var(--branco);border-bottom:1px solid var(--cinza-linha);padding:12px 24px 24px}
+.mobile-menu.open{display:block}
+.mobile-menu a{display:block;padding:13px 4px;font:700 15px var(--font-display);text-transform:uppercase;border-bottom:1px solid var(--cinza-linha)}
+
+/* ============ HERO ============ */
+.hero{position:relative;background:var(--preto);color:var(--branco);overflow:hidden;padding:0}
+.hero-bg{position:absolute;inset:0;background:url('https://praiaclube.org.br/wp-content/uploads/2025/05/Praia-Clube-celebra-90-anos-como-patrimonio-de-Uberlandia-.jpg') center/cover;opacity:.42}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(100deg,rgba(13,13,15,.96) 20%,rgba(13,13,15,.55) 60%,rgba(13,13,15,.35))}
+.hero-inner{position:relative;padding:130px 0 110px}
+.hero .badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,220,14,.14);border:1px solid rgba(255,220,14,.45);color:var(--amarelo);font:700 12px var(--font-display);letter-spacing:.16em;text-transform:uppercase;padding:9px 16px;border-radius:999px;margin-bottom:26px}
+.hero .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--amarelo);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(42px,6.5vw,84px);font-weight:900;text-transform:uppercase;max-width:820px}
+.hero h1 em{font-style:normal;color:var(--amarelo)}
+.hero p{margin:22px 0 36px;max-width:520px;color:rgba(255,255,255,.82);font-size:17px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.hero-stats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.14);border-top:1px solid rgba(255,255,255,.14)}
+.hero-stats div{background:rgba(13,13,15,.75);backdrop-filter:blur(6px);padding:26px 28px}
+.hero-stats b{display:block;font:800 32px var(--font-display);color:var(--amarelo)}
+.hero-stats span{font-size:13px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+
+/* Marquee */
+.marquee{background:var(--amarelo);overflow:hidden;padding:14px 0;border-top:3px solid var(--preto);border-bottom:3px solid var(--preto)}
+.marquee-track{display:flex;gap:48px;white-space:nowrap;animation:mq 28s linear infinite;font:800 15px var(--font-display);letter-spacing:.14em;text-transform:uppercase}
+.marquee-track span{display:flex;align-items:center;gap:48px}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ============ JOGOS ============ */
+.jogos{background:var(--preto);color:var(--branco)}
+.jogos .sec-sub{color:var(--cinza-claro)}
+.jogos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.jogo-card{background:var(--preto-2);border:1px solid var(--preto-3);border-radius:var(--radius);padding:28px;transition:.3s;position:relative;overflow:hidden}
+.jogo-card:hover{transform:translateY(-6px);border-color:rgba(255,220,14,.5)}
+.jogo-card .comp{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.jogo-card .comp b{font:700 11px var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--amarelo)}
+.jogo-card .comp span{font-size:11.5px;color:var(--cinza-claro);background:var(--preto-3);padding:5px 12px;border-radius:999px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.confronto{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.time{text-align:center;flex:1}
+.time .crest{width:64px;height:64px;margin:0 auto 10px;border-radius:50%;background:var(--preto-3);display:grid;place-items:center;padding:10px}
+.time .crest img{width:100%;height:100%;object-fit:contain}
+.time b{font:700 13px var(--font-display);text-transform:uppercase;display:block;line-height:1.2}
+.vs{font:900 18px var(--font-display);color:var(--cinza-claro)}
+.vs.placar{font-size:30px;color:var(--branco)}
+.vs.placar em{font-style:normal;color:var(--amarelo);margin:0 8px}
+.jogo-meta{display:flex;gap:8px;flex-wrap:wrap}
+.jogo-meta span{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--cinza-claro);background:var(--preto-3);padding:8px 13px;border-radius:999px}
+.jogo-meta svg{width:13px;height:13px;fill:var(--amarelo)}
+.tag-fim{position:absolute;top:0;right:0;background:var(--preto-3);color:var(--cinza-claro);font:700 10px var(--font-display);letter-spacing:.12em;padding:7px 14px;border-radius:0 var(--radius) 0 12px;text-transform:uppercase}
+
+/* ============ PUBLICIDADE ============ */
+.ads{padding:56px 0;background:var(--branco)}
+.ads-label{text-align:center;font:600 10.5px var(--font-body);letter-spacing:.22em;text-transform:uppercase;color:var(--cinza-claro);margin-bottom:16px}
+.ads-carousel{position:relative;max-width:970px;margin:0 auto;border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--cinza-linha);aspect-ratio:970/250;background:var(--cinza-bg)}
+.ads-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
+.ads-slide.on{opacity:1;pointer-events:auto}
+.ads-slide img{width:100%;height:100%;object-fit:cover}
+.ads-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.ads-dots button{width:8px;height:8px;border-radius:999px;border:0;background:var(--cinza-linha);cursor:pointer;transition:.25s;padding:0}
+.ads-dots button.on{background:var(--preto);width:24px}
+.ads-nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:0;background:rgba(13,13,15,.55);color:#fff;font-size:16px;cursor:pointer;display:grid;place-items:center;transition:.2s;z-index:2}
+.ads-nav:hover{background:var(--preto)}
+.ads-nav.prev{left:12px}.ads-nav.next{right:12px}
+
+/* ============ EQUIPES ============ */
+.equipes{background:var(--cinza-bg)}
+.eq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.eq-card{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--preto);color:var(--branco);min-height:380px;display:flex;flex-direction:column;justify-content:flex-end;padding:26px;transition:.35s;isolation:isolate}
+.eq-card::before{content:'';position:absolute;inset:0;background:var(--bg,linear-gradient(160deg,#2a2a30,#0d0d0f));z-index:-2;transition:.5s}
+.eq-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,15,.92) 15%,rgba(13,13,15,.15) 65%);z-index:-1}
+.eq-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-hover)}
+.eq-card:hover::before{transform:scale(1.05)}
+.eq-card .chip{position:absolute;top:20px;left:20px;background:var(--amarelo);color:var(--preto);font:800 10.5px var(--font-display);letter-spacing:.12em;text-transform:uppercase;padding:7px 13px;border-radius:999px}
+.eq-card h3{font-size:22px;font-weight:800;text-transform:uppercase;margin-bottom:6px}
+.eq-card p{font-size:13.5px;color:rgba(255,255,255,.75);margin-bottom:14px}
+.eq-card .btn-link{color:var(--amarelo);border-color:var(--amarelo);font-size:12px}
+.eq-chips{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+.eq-chips a{font:700 12.5px var(--font-display);letter-spacing:.08em;text-transform:uppercase;background:var(--branco);border:1.5px solid var(--cinza-linha);padding:11px 18px;border-radius:999px;transition:.2s}
+.eq-chips a:hover{background:var(--preto);color:var(--amarelo);border-color:var(--preto)}
+
+/* ============ CONQUISTAS TICKER ============ */
+.conq{background:var(--preto);color:var(--branco);padding:70px 0;overflow:hidden}
+.conq-track{display:flex;gap:20px;animation:mq 45s linear infinite;width:max-content;margin-top:40px}
+.conq-card{min-width:280px;background:var(--preto-2);border:1px solid var(--preto-3);border-radius:var(--radius-sm);padding:22px 24px}
+.conq-card b{display:block;font:800 17px var(--font-display);text-transform:uppercase;color:var(--amarelo);margin-bottom:6px}
+.conq-card span{font-size:13.5px;color:var(--cinza-claro)}
+
+/* ============ AGENDA ============ */
+.agenda-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+.ev{display:flex;gap:20px;align-items:center;padding:20px;border:1px solid var(--cinza-linha);border-radius:var(--radius-sm);margin-bottom:14px;transition:.25s;background:var(--branco)}
+.ev:hover{border-color:var(--preto);box-shadow:var(--shadow);transform:translateX(6px)}
+.ev-data{flex-shrink:0;width:72px;height:72px;border-radius:14px;background:var(--preto);color:var(--branco);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ev-data b{font:800 24px var(--font-display);color:var(--amarelo);line-height:1}
+.ev-data span{font:700 11px var(--font-display);letter-spacing:.1em;text-transform:uppercase}
+.ev-info b{display:block;font:700 15.5px var(--font-display);text-transform:uppercase;line-height:1.25;margin-bottom:4px}
+.ev-info span{font-size:13px;color:var(--cinza-texto);display:inline-flex;align-items:center;gap:6px}
+.ev-info svg{width:12px;height:12px;fill:var(--amarelo-escuro)}
+.agenda-side{background:var(--preto);color:var(--branco);border-radius:var(--radius);padding:40px;position:sticky;top:100px}
+.agenda-side h3{font-size:26px;font-weight:800;text-transform:uppercase;margin-bottom:12px}
+.agenda-side h3 em{font-style:normal;color:var(--amarelo)}
+.agenda-side p{color:var(--cinza-claro);font-size:14.5px;margin-bottom:24px}
+.agenda-side .mini{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.agenda-side .mini div{background:var(--preto-2);border-radius:var(--radius-sm);padding:16px}
+.agenda-side .mini b{display:block;font:800 22px var(--font-display);color:var(--amarelo)}
+.agenda-side .mini span{font-size:12px;color:var(--cinza-claro);text-transform:uppercase;letter-spacing:.06em}
+
+/* ============ NOTÍCIAS ============ */
+.noticias{background:var(--cinza-bg)}
+.not-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:24px}
+.not-destaque{position:relative;border-radius:var(--radius);overflow:hidden;min-height:480px;display:flex;align-items:flex-end;background:url('https://praiaclube.org.br/wp-content/uploads/2025/05/Praia-Clube-celebra-90-anos-como-patrimonio-de-Uberlandia-.jpg') center/cover;color:var(--branco);transition:.3s}
+.not-destaque:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
+.not-destaque::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,15,.95) 10%,rgba(13,13,15,.1) 60%)}
+.not-destaque>div{position:relative;z-index:1;padding:36px}
+.cat{display:inline-block;background:var(--amarelo);color:var(--preto);font:800 10.5px var(--font-display);letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+.not-destaque h3{font-size:clamp(22px,2.6vw,30px);font-weight:800;line-height:1.15}
+.not-destaque time{display:block;margin-top:12px;font-size:13px;color:rgba(255,255,255,.65)}
+.not-lista{display:flex;flex-direction:column;gap:14px}
+.not-item{background:var(--branco);border:1px solid var(--cinza-linha);border-radius:var(--radius-sm);padding:22px 24px;transition:.25s;flex:1;display:flex;flex-direction:column;justify-content:center}
+.not-item:hover{border-color:var(--preto);box-shadow:var(--shadow);transform:translateX(6px)}
+.not-item .meta{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.not-item .cat{margin:0}
+.not-item .cat.alt{background:var(--cinza-bg);color:var(--cinza-texto)}
+.not-item time{font-size:12.5px;color:var(--cinza-claro)}
+.not-item h4{font-size:16.5px;font-weight:700;line-height:1.3}
+
+/* ============ VIVA O PRAIA ============ */
+.viva-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.viva-card{border:1px solid var(--cinza-linha);border-radius:var(--radius);padding:34px 30px;transition:.3s;position:relative;overflow:hidden;background:var(--branco)}
+.viva-card:hover{border-color:var(--preto);transform:translateY(-6px);box-shadow:var(--shadow-hover)}
+.viva-icon{width:58px;height:58px;border-radius:16px;background:var(--amarelo);display:grid;place-items:center;margin-bottom:22px;font-size:26px}
+.viva-card h3{font-size:20px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+.viva-card p{font-size:14px;color:var(--cinza-texto);margin-bottom:18px}
+.viva-card.dark{background:var(--preto);color:var(--branco);border-color:var(--preto)}
+.viva-card.dark p{color:var(--cinza-claro)}
+.viva-card.dark .btn-link{color:var(--amarelo)}
+
+/* ============ SÓCIO / PATROCINADOR SPLIT ============ */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.split-card{border-radius:var(--radius);padding:52px 46px;position:relative;overflow:hidden}
+.split-card.yellow{background:var(--amarelo)}
+.split-card.dark{background:var(--preto);color:var(--branco)}
+.split-card h3{font-size:clamp(26px,3vw,36px);font-weight:900;text-transform:uppercase;margin-bottom:12px}
+.split-card p{font-size:15px;margin-bottom:28px;max-width:380px}
+.split-card.yellow p{color:rgba(13,13,15,.75)}
+.split-card.dark p{color:var(--cinza-claro)}
+.split-card .num{position:absolute;right:-10px;bottom:-30px;font:900 170px var(--font-display);opacity:.09;line-height:1}
+
+/* ============ APP ============ */
+.app{background:var(--preto);color:var(--branco);overflow:hidden}
+.app-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.app h2{font-size:clamp(30px,4vw,46px);font-weight:900;text-transform:uppercase}
+.app h2 em{font-style:normal;color:var(--amarelo)}
+.app p{color:var(--cinza-claro);margin:18px 0 30px;max-width:480px}
+.app-feats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:34px}
+.app-feats div{display:flex;gap:12px;align-items:center;background:var(--preto-2);border-radius:var(--radius-sm);padding:15px 17px;font-size:13.5px;font-weight:600}
+.app-feats .ic{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:rgba(255,220,14,.15);color:var(--amarelo);display:grid;place-items:center;font-size:16px}
+.badges{display:flex;gap:14px;flex-wrap:wrap}
+.badges img{height:52px;width:auto;border-radius:10px;transition:.25s}
+.badges img:hover{transform:translateY(-3px)}
+.phone-mock{position:relative;display:flex;justify-content:center}
+.phone-mock img{width:280px;border-radius:36px;box-shadow:0 40px 90px rgba(0,0,0,.55);border:6px solid var(--preto-3)}
+.phone-mock::before{content:'';position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,14,.22),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)}
+
+/* ============ FAQ ============ */
+.faq-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.faq-item{border:1px solid var(--cinza-linha);border-radius:var(--radius-sm);margin-bottom:12px;overflow:hidden;transition:.25s;background:var(--branco)}
+.faq-item.open{border-color:var(--preto)}
+.faq-q{width:100%;background:none;border:0;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 22px;font:700 15px var(--font-display);text-transform:uppercase;letter-spacing:.02em;cursor:pointer;text-align:left}
+.faq-q .pl{width:30px;height:30px;flex-shrink:0;border-radius:50%;background:var(--amarelo);display:grid;place-items:center;font:800 16px var(--font-display);transition:.3s}
+.faq-item.open .pl{transform:rotate(45deg);background:var(--preto);color:var(--amarelo)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;font-size:14px;color:var(--cinza-texto)}
+.faq-a>div{padding:0 22px 22px}
+.faq-side h2{margin-bottom:14px}
+.faq-side p{color:var(--cinza-texto);margin-bottom:26px;max-width:400px}
+.faq-contact{background:var(--cinza-bg);border-radius:var(--radius);padding:28px;margin-top:8px}
+.faq-contact b{display:block;font:700 14px var(--font-display);text-transform:uppercase;margin-bottom:10px}
+.faq-contact a{display:flex;align-items:center;gap:10px;font-size:14px;padding:7px 0;font-weight:600}
+.faq-contact a:hover{color:var(--amarelo-escuro)}
+
+/* ============ PATROCINADORES ============ */
+.patro{background:var(--cinza-bg)}
+.patro-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.patro-grid div{background:var(--branco);border:1px solid var(--cinza-linha);border-radius:var(--radius-sm);height:86px;display:grid;place-items:center;padding:18px;transition:.25s;font:700 12px var(--font-display);text-transform:uppercase;color:var(--cinza-claro);text-align:center}
+.patro-grid div:hover{border-color:var(--preto);transform:translateY(-3px)}
+.patro-grid img{max-height:46px;width:auto;filter:grayscale(1);opacity:.75;transition:.25s;object-fit:contain}
+.patro-grid div:hover img{filter:none;opacity:1}
+
+/* ============ FOOTER ============ */
+footer{background:var(--preto);color:var(--branco);padding:80px 0 0}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;padding-bottom:56px}
+.foot-brand p{color:var(--cinza-claro);font-size:14px;margin:18px 0 24px;max-width:300px}
+.foot-social{display:flex;gap:10px}
+.foot-social a{width:42px;height:42px;border-radius:12px;background:var(--preto-2);display:grid;place-items:center;transition:.25s;font-size:16px}
+.foot-social a:hover{background:var(--amarelo);color:var(--preto);transform:translateY(-3px)}
+.foot-col b{display:block;font:800 13px var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--amarelo);margin-bottom:18px}
+.foot-col a{display:block;padding:6px 0;color:var(--cinza-claro);font-size:14px;transition:.2s}
+.foot-col a:hover{color:var(--branco);padding-left:6px}
+.foot-col .txt{color:var(--cinza-claro);font-size:14px;padding:6px 0}
+.foot-bottom{border-top:1px solid var(--preto-3);padding:24px 0;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--cinza-claro)}
+.foot-bottom a{color:var(--amarelo)}
+
+/* ============ RESPONSIVO ============ */
+@media(max-width:1024px){
+  .menu{display:none}
+  .burger{display:block}
+  .nav-cta .btn-dark{display:none}
+  .jogos-grid{grid-template-columns:1fr 1fr}
+  .eq-grid{grid-template-columns:1fr 1fr}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .agenda-grid,.not-grid,.app-grid,.faq-grid,.split{grid-template-columns:1fr}
+  .agenda-side{position:static}
+  .viva-grid{grid-template-columns:1fr 1fr}
+  .patro-grid{grid-template-columns:repeat(4,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .phone-mock{display:none}
+}
+@media(max-width:640px){
+  section{padding:64px 0}
+  .jogos-grid,.eq-grid,.viva-grid{grid-template-columns:1fr}
+  .hero-inner{padding:90px 0 70px}
+  .patro-grid{grid-template-columns:repeat(3,1fr)}
+  .foot-grid{grid-template-columns:1fr}
+  .topbar .wrap{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wrap">
+    <span>Seg–Sáb 6h às 22h · Dom e feriados 6h às 19h</span>
+    <span>Central de Atendimento: <a href="tel:3432563100">(34) 3256-3100</a> · <a href="https://api.whatsapp.com/send/?phone=553498813100">WhatsApp</a></span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="wrap nav">
+    <a href="#" class="logo">
+      <span class="logo-mark">PC</span>
+      <span>Praia Clube<small>Uberlândia · 91 anos</small></span>
+    </a>
+    <ul class="menu">
+      <li><a href="#clube">O Clube</a></li>
+      <li><a href="#esportes">Esportes</a></li>
+      <li><a href="#agenda">Agenda</a></li>
+      <li><a href="#noticias">Notícias</a></li>
+      <li><a href="#app">App</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://praiaclube.org.br/seja-socio/" class="btn btn-yellow">Seja Sócio</a>
+      <a href="https://praiaclube.org.br/baixe-o-app/" class="btn btn-dark">Login no App</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="mobile-menu" id="mmenu">
+    <a href="#clube">O Clube</a>
+    <a href="#esportes">Esportes</a>
+    <a href="#agenda">Agenda</a>
+    <a href="#noticias">Notícias</a>
+    <a href="#app">App</a>
+    <a href="https://praiaclube.org.br/baixe-o-app/">Login no App</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="clube">
+  <div class="hero-bg"></div>
+  <div class="hero-grad"></div>
+  <div class="wrap hero-inner">
+    <span class="badge"><span class="dot"></span>91 anos · Movidos pela história, conectados ao futuro</span>
+    <h1>Um dos maiores <em>clubes do Brasil</em></h1>
+    <p>Lazer, esporte, cultura e diversão. Da escola de esportes ao alto rendimento olímpico e paralímpico — com estrutura 100% acessível.</p>
+    <div class="hero-ctas">
+      <a href="https://praiaclube.org.br/seja-socio/" class="btn btn-yellow">Quero ser sócio <span class="arr">→</span></a>
+      <a href="https://praiaclube.org.br/tour-virtual/" class="btn btn-ghost">Tour virtual pelo clube</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div><b>91</b><span>anos de história</span></div>
+    <div><b>30+</b><span>modalidades esportivas</span></div>
+    <div><b>2x</b><span>campeão da Superliga</span></div>
+    <div><b>100%</b><span>estrutura acessível</span></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>PRAIA CLUBE ✦ CONEXÃO ✦ TRADIÇÃO ✦ INOVAÇÃO ✦ 91 ANOS ✦ PRAIA PRA VC ✦ PRAIA CLUBE ✦ CONEXÃO ✦ TRADIÇÃO ✦ INOVAÇÃO ✦ 91 ANOS ✦ PRAIA PRA VC ✦</span>
+    <span>PRAIA CLUBE ✦ CONEXÃO ✦ TRADIÇÃO ✦ INOVAÇÃO ✦ 91 ANOS ✦ PRAIA PRA VC ✦ PRAIA CLUBE ✦ CONEXÃO ✦ TRADIÇÃO ✦ INOVAÇÃO ✦ 91 ANOS ✦ PRAIA PRA VC ✦</span>
+  </div>
+</div>
+
+<!-- JOGOS -->
+<section class="jogos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Acompanhe o Praia</span>
+        <h2 class="sec-title" style="color:#fff">Próximos jogos</h2>
+      </div>
+      <a href="#" class="btn-link" style="color:#fff">Calendário completo →</a>
+    </div>
+    <div class="jogos-grid">
+      <div class="jogo-card reveal">
+        <div class="comp"><b>Futsal · LNF Cresol 2026</b><span>Fora</span></div>
+        <div class="confronto">
+          <div class="time"><span class="crest"><img src="https://praiaclube.org.br/wp-content/uploads/2026/06/CASCAVEL.png" alt="Cascavel"></span><b>Cascavel</b></div>
+          <span class="vs">VS</span>
+          <div class="time"><span class="crest"><img src="https://praiaclube.org.br/wp-content/uploads/2025/02/Praia-clube-Logo-500px.png" alt="Praia Clube"></span><b>Praia Clube</b></div>
+        </div>
+        <div class="jogo-meta">
+          <span><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Ginásio da Neva · Cascavel/PR</span>
+          <span>📅 Sáb 11 JUL · 18h30</span>
+          <span>📺 LNF TV</span>
+        </div>
+      </div>
+      <div class="jogo-card reveal">
+        <div class="comp"><b>Futsal · LNF Cresol 2026</b><span style="background:rgba(255,220,14,.18);color:var(--amarelo)">Em casa</span></div>
+        <div class="confronto">
+          <div class="time"><span class="crest"><img src="https://praiaclube.org.br/wp-content/uploads/2025/02/Praia-clube-Logo-500px.png" alt="Praia Clube"></span><b>Praia Clube</b></div>
+          <span class="vs">VS</span>
+          <div class="time"><span class="crest"><img src="https://praiaclube.org.br/wp-content/uploads/2026/07/JARAGUA.png" alt="Jaraguá"></span><b>Jaraguá</b></div>
+        </div>
+        <div class="jogo-meta">
+          <span><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Arena G3 · Praia Clube</span>
+          <span>📅 Sáb 18 JUL · 18h30</span>
+          <span>📺 LNF TV</span>
+        </div>
+      </div>
+      <div class="jogo-card reveal">
+        <span class="tag-fim">Fim de jogo</span>
+        <div class="comp"><b>Futsal · LNF Cresol 2026</b></div>
+        <div class="confronto">
+          <div class="time"><span class="crest"><img src="https://praiaclube.org.br/wp-content/uploads/2025/02/Praia-clube-Logo-500px.png" alt="Praia Clube"></span><b>Praia Clube</b></div>
+          <span class="vs placar">4<em>×</em>4</span>
+          <div class="time"><span class="crest" style="font:800 13px var(--font-display);color:var(--cinza-claro)">ACBF</span><b>ACBF</b></div>
+        </div>
+        <div class="jogo-meta">
+          <span><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Arena G3 · Praia Clube</span>
+          <span>📅 Sáb 04 JUL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICIDADE -->
+<div class="ads">
+  <div class="wrap reveal">
+    <p class="ads-label">Anunciantes e parceiros</p>
+    <div class="ads-carousel" id="adsCarousel">
+      <a class="ads-slide on" href="https://www.unimeduberlandia.coop.br/portal/" target="_blank" rel="noopener sponsored"><img src="https://praiaclube.org.br/wp-content/uploads/2026/07/PRAIA-CLUBE-Banner-Site-A-Grande-Jogada-970px-x-250px_.webp" alt="Unimed Uberlândia — A Grande Jogada"></a>
+      <a class="ads-slide" href="https://www.italac.com.br/" target="_blank" rel="noopener sponsored"><img src="https://praiaclube.org.br/wp-content/uploads/2026/07/banner-anunciante-praia-clube-italac.webp" alt="Italac"></a>
+      <a class="ads-slide" href="https://www.instagram.com/p/DaS-7sVgVAj/" target="_blank" rel="noopener sponsored"><img src="https://praiaclube.org.br/wp-content/uploads/2026/06/banner-anunciante-praia-clube-festa-91-anos.webp" alt="Festa 91 anos Praia Clube"></a>
+      <a class="ads-slide" href="https://www.guaranamineiro.ind.br/" target="_blank" rel="noopener sponsored"><img src="https://praiaclube.org.br/wp-content/uploads/2026/06/banner-anunciante-praia-guarana-mineiro.webp" alt="Guaraná Mineiro"></a>
+      <a class="ads-slide" href="https://bembrasil.ind.br/" target="_blank" rel="noopener sponsored"><img src="https://praiaclube.org.br/wp-content/uploads/2026/06/banner-anunciante-praia-bem-brasil.webp" alt="Bem Brasil"></a>
+      <a class="ads-slide" href="https://www.youtube.com/@PapodePraiaPodcast" target="_blank" rel="noopener sponsored"><img src="https://praiaclube.org.br/wp-content/uploads/2026/06/banner-anunciante-praia-podcast.webp" alt="Papo de Praia Podcast"></a>
+      <a class="ads-slide" href="https://www.instagram.com/p/DOEhXW0iRax/" target="_blank" rel="noopener sponsored"><img src="https://praiaclube.org.br/wp-content/uploads/2026/06/banner-anunciante-praia-praia-store.webp" alt="Praia Store"></a>
+      <button class="ads-nav prev" aria-label="Banner anterior">‹</button>
+      <button class="ads-nav next" aria-label="Próximo banner">›</button>
+    </div>
+    <div class="ads-dots" id="adsDots"></div>
+  </div>
+</div>
+
+<!-- EQUIPES -->
+<section class="equipes" id="esportes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Alto rendimento</span>
+        <h2 class="sec-title">Equipes profissionais</h2>
+        <p class="sec-sub">Da base ao pódio: as equipes que fazem do Praia uma potência olímpica e paralímpica.</p>
+      </div>
+    </div>
+    <div class="eq-grid">
+      <a href="https://praiaclube.org.br/dentil-praia-clube/" class="eq-card reveal" style="--bg:linear-gradient(160deg,#3b3200,#0d0d0f 70%)">
+        <span class="chip">🏆 Campeão da Superliga</span>
+        <h3>Dentil / Praia Clube</h3>
+        <p>Vôlei feminino — o time mais vitorioso da história do clube.</p>
+        <span class="btn-link">Conhecer o time →</span>
+      </a>
+      <a href="https://praiaclube.org.br/praia-clube-uberlandia-volei/" class="eq-card reveal" style="--bg:linear-gradient(160deg,#1e2733,#0d0d0f 70%)">
+        <span class="chip">Na Superliga</span>
+        <h3>Praia / Uberlândia Vôlei</h3>
+        <p>Vôlei masculino — 3º lugar no Sul-Americano.</p>
+        <span class="btn-link">Conhecer o time →</span>
+      </a>
+      <a href="https://praiaclube.org.br/praia-clube-futsal/" class="eq-card reveal" style="--bg:linear-gradient(160deg,#20301e,#0d0d0f 70%)">
+        <span class="chip">Campeão Taça Brasil</span>
+        <h3>Praia Clube Futsal</h3>
+        <p>Disputando a Liga Nacional de Futsal Cresol 2026.</p>
+        <span class="btn-link">Conhecer o time →</span>
+      </a>
+      <a href="https://praiaclube.org.br/volei-de-praia/" class="eq-card reveal" style="--bg:linear-gradient(160deg,#33261e,#0d0d0f 70%)">
+        <span class="chip">🥇 Melhor dupla do mundo</span>
+        <h3>Vôlei de Praia</h3>
+        <p>Duda e Ana Patrícia: a melhor dupla feminina do planeta.</p>
+        <span class="btn-link">Conhecer as equipes →</span>
+      </a>
+    </div>
+    <div class="eq-chips reveal">
+      <a href="https://praiaclube.org.br/atletismo-2/">Atletismo</a>
+      <a href="https://praiaclube.org.br/basquete-3x3/">Basquete 3x3</a>
+      <a href="https://praiaclube.org.br/esportes-competitivo/">Handebol</a>
+      <a href="https://praiaclube.org.br/esportes-competitivo/">Beach Tennis</a>
+      <a href="https://praiaclube.org.br/esportes-competitivo/">Natação</a>
+      <a href="https://praiaclube.org.br/esportes-competitivo/">Tênis de Mesa</a>
+      <a href="https://praiaclube.org.br/esportes-competitivo/">Tiro Olímpico</a>
+      <a href="https://praiaclube.org.br/esportes-competitivo/">+ Todos os esportes</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONQUISTAS -->
+<section class="conq">
+  <div class="wrap reveal">
+    <span class="kicker">Potência olímpica</span>
+    <h2 class="sec-title" style="color:#fff">Pódios, recordes e medalhas</h2>
+  </div>
+  <div class="conq-track">
+    <div class="conq-card"><b>Vôlei</b><span>Bicampeão da Superliga e Sul-Americano</span></div>
+    <div class="conq-card"><b>Vôlei de Praia</b><span>Duda e Ana Patrícia — nº 1 do mundo</span></div>
+    <div class="conq-card"><b>Atletismo</b><span>Mais de 55 atletas de ponta</span></div>
+    <div class="conq-card"><b>Futsal</b><span>Atual campeão da Taça Brasil</span></div>
+    <div class="conq-card"><b>Handebol</b><span>Atual campeão Brasileiro</span></div>
+    <div class="conq-card"><b>Basquete 3x3</b><span>Campeão Brasileiro masc. e fem.</span></div>
+    <div class="conq-card"><b>Tênis de Mesa</b><span>Campeã mundial Bruna Alexandre</span></div>
+    <div class="conq-card"><b>Beach Tennis</b><span>André Baran — top-5 do mundo</span></div>
+    <div class="conq-card"><b>Tiro Olímpico</b><span>Campeão Brasileiro Interclubes</span></div>
+    <div class="conq-card"><b>Vôlei</b><span>Bicampeão da Superliga e Sul-Americano</span></div>
+    <div class="conq-card"><b>Vôlei de Praia</b><span>Duda e Ana Patrícia — nº 1 do mundo</span></div>
+    <div class="conq-card"><b>Atletismo</b><span>Mais de 55 atletas de ponta</span></div>
+    <div class="conq-card"><b>Futsal</b><span>Atual campeão da Taça Brasil</span></div>
+    <div class="conq-card"><b>Handebol</b><span>Atual campeão Brasileiro</span></div>
+    <div class="conq-card"><b>Basquete 3x3</b><span>Campeão Brasileiro masc. e fem.</span></div>
+    <div class="conq-card"><b>Tênis de Mesa</b><span>Campeã mundial Bruna Alexandre</span></div>
+    <div class="conq-card"><b>Beach Tennis</b><span>André Baran — top-5 do mundo</span></div>
+    <div class="conq-card"><b>Tiro Olímpico</b><span>Campeão Brasileiro Interclubes</span></div>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section id="agenda">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Programação social</span>
+        <h2 class="sec-title">Agenda do clube</h2>
+        <p class="sec-sub">Shows, festas e eventos para toda a família praiana — todo fim de semana.</p>
+      </div>
+    </div>
+    <div class="agenda-grid">
+      <div>
+        <a href="https://praiaclube.org.br/agenda/aniversario-praia-clube-91-anos-relton-alves-biquini-cavadao" class="ev reveal">
+          <span class="ev-data"><b>09</b><span>JUL</span></span>
+          <span class="ev-info"><b>Aniversário 91 anos · Relton Alves + Biquini Cavadão</b><span><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/></svg>Praia Hall · 18h · Exclusivo para sócios</span></span>
+        </a>
+        <a href="https://praiaclube.org.br/agenda/lounge-skate-music-du-rock-duo-rota-34-jurassicos/" class="ev reveal">
+          <span class="ev-data"><b>11</b><span>JUL</span></span>
+          <span class="ev-info"><b>Lounge Skate Music · Du Rock Duo + Rota 34 + Jurássicos</b><span><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/></svg>Lounge Skate Music · 12h</span></span>
+        </a>
+        <a href="https://praiaclube.org.br/agenda/baila-comigo-odilon-wagner-15/" class="ev reveal">
+          <span class="ev-data"><b>11</b><span>JUL</span></span>
+          <span class="ev-info"><b>Baila Comigo · Odilon Wagner</b><span><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/></svg>Salão Ulisses Finotti · 20h</span></span>
+        </a>
+        <a href="https://praiaclube.org.br/agenda/praia-vibes-eclusa-gato-preto-pda/" class="ev reveal">
+          <span class="ev-data"><b>12</b><span>JUL</span></span>
+          <span class="ev-info"><b>Praia Vibes (Eclusa) · Gato Preto + PDA</b><span><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/></svg>Eclusa · 12h</span></span>
+        </a>
+        <a href="https://praiaclube.org.br/agenda/lounge-skate-music-rock-brothers-ketamina/" class="ev reveal">
+          <span class="ev-data"><b>12</b><span>JUL</span></span>
+          <span class="ev-info"><b>Lounge Skate Music · Rock Brothers + Ketamina</b><span><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/></svg>Lounge Skate Music · 12h</span></span>
+        </a>
+      </div>
+      <aside class="agenda-side reveal">
+        <span class="kicker">Julho de 2026</span>
+        <h3>Mês de aniversário: <em>91 anos de Praia</em></h3>
+        <p>Uma programação especial o mês inteiro no Praia Hall — de Jovem Dionísio ao Grupo Sambô. Confira o calendário completo e programe-se.</p>
+        <div class="mini">
+          <div><b>12+</b><span>eventos no mês</span></div>
+          <div><b>5</b><span>espaços de shows</span></div>
+        </div>
+        <a href="#" class="btn btn-yellow">Ver calendário completo <span class="arr">→</span></a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- NOTÍCIAS -->
+<section class="noticias" id="noticias">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Fique por dentro</span>
+        <h2 class="sec-title">Notícias do Praia</h2>
+      </div>
+      <a href="#" class="btn-link">Todas as notícias →</a>
+    </div>
+    <div class="not-grid">
+      <a href="https://praiaclube.org.br/semana-de-aniversario-do-praia-clube-recebe-biquini-cavadao-no-praia-hall/" class="not-destaque reveal">
+        <div>
+          <span class="cat">Destaques</span>
+          <h3>Semana de aniversário do Praia Clube recebe Biquini Cavadão no Praia Hall</h3>
+          <time>8 de julho de 2026</time>
+        </div>
+      </a>
+      <div class="not-lista">
+        <a href="https://praiaclube.org.br/atleta-do-praia-clube-cemig-exercito-futel-conquista-o-tricampeonato-brasileiro-sub-20/" class="not-item reveal">
+          <span class="meta"><span class="cat alt">Atletismo</span><time>8 jul 2026</time></span>
+          <h4>Atleta do Praia Clube conquista o tricampeonato brasileiro sub-20</h4>
+        </a>
+        <a href="https://praiaclube.org.br/praia-clube-consolida-projeto-de-excelencia-com-presenca-no-top-5-em-todas-as-categorias-da-3a-etapa-do-cbi-de-beach-tennis/" class="not-item reveal">
+          <span class="meta"><span class="cat alt">Beach Tennis</span><time>7 jul 2026</time></span>
+          <h4>Praia no Top 5 em todas as categorias da 3ª etapa do CBI de Beach Tennis</h4>
+        </a>
+        <a href="https://praiaclube.org.br/atleta-praiano-darlan-romani-retorna-as-competicoes-e-foca-no-ciclo-olimpico-de-los-angeles-2028/" class="not-item reveal">
+          <span class="meta"><span class="cat alt">Atletismo</span><time>6 jul 2026</time></span>
+          <h4>Darlan Romani retorna às competições e foca no Ciclo Olímpico de LA 2028</h4>
+        </a>
+        <a href="https://praiaclube.org.br/treinadora-do-praia-clube-e-convocada-para-a-selecao-brasileira-de-paratriathlon/" class="not-item reveal">
+          <span class="meta"><span class="cat alt">Paralímpico</span><time>6 jul 2026</time></span>
+          <h4>Treinadora do Praia é convocada para a Seleção Brasileira de Paratriathlon</h4>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIVA O PRAIA -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Praia pra você</span>
+        <h2 class="sec-title">Viva o clube todos os dias</h2>
+        <p class="sec-sub">Esporte, lazer e cultura para todas as idades — do Espaço Bebê ao Lazer Não Tem Idade.</p>
+      </div>
+    </div>
+    <div class="viva-grid">
+      <a href="https://praiaclube.org.br/escola-de-esportes/" class="viva-card reveal">
+        <span class="viva-icon">🎓</span>
+        <h3>Escola de Esportes</h3>
+        <p>Formação esportiva da base ao alto rendimento, em dezenas de modalidades.</p>
+        <span class="btn-link">Conhecer →</span>
+      </a>
+      <a href="https://praiaclube.org.br/open-fitness/" class="viva-card dark reveal">
+        <span class="viva-icon">💪</span>
+        <h3>Open Fitness</h3>
+        <p>Academia completa com estrutura de ponta para o seu treino diário.</p>
+        <span class="btn-link">Saiba mais →</span>
+      </a>
+      <a href="https://praiaclube.org.br/campeonatos-internos/" class="viva-card reveal">
+        <span class="viva-icon">🏅</span>
+        <h3>Campeonatos Internos</h3>
+        <p>Ações de esporte e lazer que movimentam a família praiana o ano todo.</p>
+        <span class="btn-link">Ver campeonatos →</span>
+      </a>
+      <a href="https://praiaclube.org.br/estrutura-clube" class="viva-card reveal">
+        <span class="viva-icon">🏟️</span>
+        <h3>Estrutura</h3>
+        <p>Restaurantes, saunas, fitness, espaço bebê, eventos e muito mais.</p>
+        <span class="btn-link">Explorar o clube →</span>
+      </a>
+      <a href="https://praiaclube.org.br/galeria/" class="viva-card reveal">
+        <span class="viva-icon">📸</span>
+        <h3>Galeria de Fotos</h3>
+        <p>Reviva os melhores momentos sociais e esportivos do Praia.</p>
+        <span class="btn-link">Ver galeria →</span>
+      </a>
+      <a href="https://praiaclube.org.br/historia/" class="viva-card dark reveal">
+        <span class="viva-icon">📖</span>
+        <h3>Nossa História</h3>
+        <p>91 anos como patrimônio de Uberlândia. Conheça essa trajetória.</p>
+        <span class="btn-link">Conhecer a história →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SÓCIO / PATROCINADOR -->
+<section style="padding-top:0">
+  <div class="wrap split">
+    <div class="split-card yellow reveal">
+      <span class="num">91</span>
+      <span class="kicker" style="background:var(--preto);color:var(--amarelo)">Faça parte</span>
+      <h3>Seja sócio do Praia</h3>
+      <p>Planos individual e familiar. Todo o clube — esporte, lazer e cultura — para você e sua família.</p>
+      <a href="https://praiaclube.org.br/seja-socio/" class="btn btn-dark">Quero virar sócio <span class="arr">→</span></a>
+    </div>
+    <div class="split-card dark reveal">
+      <span class="num">10x</span>
+      <span class="kicker">Para empresas</span>
+      <h3>Seja um patrocinador</h3>
+      <p>Associe sua marca a uma potência olímpica e tenha seu investimento multiplicado.</p>
+      <a href="https://praiaclube.org.br/seja-um-patrocinador/" class="btn btn-yellow">Saiba mais <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- APP -->
+<section class="app" id="app">
+  <div class="wrap app-grid">
+    <div class="reveal">
+      <span class="kicker">Baixe o app</span>
+      <h2>O clube inteiro <em>na palma da mão</em></h2>
+      <p>A área logada do site foi descontinuada: agora tudo está no aplicativo — uma experiência mais prática, rápida e segura.</p>
+      <div class="app-feats">
+        <div><span class="ic">🎟️</span>Emissão de convites</div>
+        <div><span class="ic">🔓</span>Acesso ao clube</div>
+        <div><span class="ic">💳</span>Pagamentos e D.A.</div>
+        <div><span class="ic">📅</span>Agenda e serviços</div>
+      </div>
+      <div class="badges">
+        <a href="https://apps.apple.com/br/app/praia-clube/id1459945925"><img src="https://praiaclube.org.br/wp-content/uploads/2025/02/disponivel-app-store-badge-2.png" alt="Baixar na App Store"></a>
+        <a href="https://play.google.com/store/apps/details?id=br.org.praiaclube.app&hl=pt_BR"><img src="https://praiaclube.org.br/wp-content/uploads/2025/02/disponivel-google-play-badge-2.png" alt="Disponível no Google Play"></a>
+      </div>
+    </div>
+    <div class="phone-mock reveal">
+      <img src="https://praiaclube.org.br/wp-content/uploads/2026/03/460x996bb.webp" alt="App Praia Clube">
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap faq-grid">
+    <div class="faq-side reveal">
+      <span class="kicker">Dúvidas frequentes</span>
+      <h2 class="sec-title">FAQ Praia</h2>
+      <p>As respostas para as dúvidas mais comuns dos sócios e visitantes. Não encontrou o que procura? Fale com a gente.</p>
+      <div class="faq-contact">
+        <b>Central de Atendimento</b>
+        <a href="https://api.whatsapp.com/send/?phone=553498813100">💬 WhatsApp (34) 9881-3100</a>
+        <a href="tel:3432563100">📞 (34) 3256-3100</a>
+        <a href="https://praiaclube.org.br/ouvidoria/">🗣️ Ouvidoria — Seg a Sex, 7h30 às 17h</a>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="faq-item open">
+        <button class="faq-q">Como emitir convites para convidados?<span class="pl">+</span></button>
+        <div class="faq-a"><div>Sócios titulares ou cônjuges emitem convites direto pelo aplicativo do clube, na aba "Convites". O convidado valida o cadastro por reconhecimento facial via e-mail. Valores: R$ 100 (seg–qui) e R$ 160 (sex–dom e feriados), com cortesia para crianças de 2 a 5 anos e 50% para 6 a 11 anos.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">O que é o Débito Autorizado (D.A.)?<span class="pl">+</span></button>
+        <div class="faq-a"><div>É o pagamento das mensalidades debitado direto em conta-corrente, sob autorização do associado — sem boleto impresso, mais simples e sustentável. Verifique se seu banco está disponível na Central de Atendimentos: (34) 9881-3100 (WhatsApp, opção 6).</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Quais os valores para ser sócio?<span class="pl">+</span></button>
+        <div class="faq-a"><div>Joia Individual: R$ 5.600 à vista (ou 5x de R$ 1.250) + mensalidade de R$ 280. Joia Familiar: R$ 9.000 à vista (ou 5x de R$ 2.000) + mensalidade de R$ 560. Valores de 2026, sujeitos a alterações.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Como funciona o Volta ao Praia?<span class="pl">+</span></button>
+        <div class="faq-a"><div>Ex-sócios podem retornar com isenção de nova joia após 12 meses do primeiro desligamento (ou 24 meses do segundo, com 50% do valor da joia vigente). Consulte condições na Central de Atendimentos.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Qual o horário de funcionamento do clube?<span class="pl">+</span></button>
+        <div class="faq-a"><div>Segunda a sábado, das 6h às 22h. Domingos e feriados, das 6h às 19h. Fechado em 25 de dezembro e 1º de janeiro. Endereço: Praça Primo Crosara, 505, Bairro Copacabana — Uberlândia/MG.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Clubes conveniados: como usar?<span class="pl">+</span></button>
+        <div class="faq-a"><div>O Praia tem intercâmbio com clubes como Minas Tênis Clube, Iate de Brasília e SOGIPA. Associados podem frequentá-los 30 dias por ano — basta solicitar a Carta de Apresentação na Secretaria com 24h de antecedência.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATROCINADORES -->
+<section class="patro">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Parceiros oficiais</span>
+        <h2 class="sec-title">Patrocinadores</h2>
+      </div>
+      <a href="https://praiaclube.org.br/seja-um-patrocinador/" class="btn btn-dark">Seja um patrocinador</a>
+    </div>
+    <div class="patro-grid reveal">
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2022/07/Cemig-Patrocinadores-praia-clube-logo.png" alt="Cemig"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2025/11/VivoVivinho_CMYK_H_2020V1.jpg" alt="Vivo"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2023/01/Sada.jpg" alt="Sada"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2023/07/PATROCINADORES-PRAIA-CLUBE_0002_Marca-Sankhya-RGB.jpg" alt="Sankhya"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2023/07/Patrocinadores-Praia-Clube-_0028_Sicredi.jpg" alt="Sicredi"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2023/07/Patrocinadores-Praia-Clube-_0009_Italac.jpg" alt="Italac"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2023/07/Patrocinadores-Praia-Clube-_0002_Bem-brasil.jpg" alt="Bem Brasil"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2023/07/Patrocinadores-Praia-Clube-_0014_Guarana-mineiro.jpg" alt="Guaraná Mineiro"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2022/06/Patrocinadore-Praia-Clube-Logos_0001_engie.png" alt="Engie"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2022/06/Patrocinadore-Praia-Clube-Logos_0002_cbmm.png" alt="CBMM"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2023/01/Uniube-Logo.jpg" alt="Uniube"></div>
+      <div><img src="https://praiaclube.org.br/wp-content/uploads/2023/07/Patrocinadores-Praia-Clube-_0001_CBC.jpg" alt="CBC"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#" class="logo" style="color:#fff">
+          <span class="logo-mark" style="background:var(--amarelo);color:var(--preto)">PC</span>
+          <span>Praia Clube<small style="color:var(--cinza-claro)">Uberlândia · 91 anos</small></span>
+        </a>
+        <p>Praça Primo Crosara, 505 — Bairro Copacabana, Uberlândia/MG. Seg–Sáb 6h às 22h · Dom e feriados 6h às 19h.</p>
+        <div class="foot-social">
+          <a href="https://www.instagram.com/praiaclubeoficial/" aria-label="Instagram">📷</a>
+          <a href="https://www.facebook.com/praiaclube" aria-label="Facebook">👍</a>
+          <a href="https://www.youtube.com/channel/UCG3Tg3p2wVEGuQyCDsEnFUg" aria-label="YouTube">▶️</a>
+          <a href="https://www.linkedin.com/company/praiaclubeoficial" aria-label="LinkedIn">💼</a>
+          <a href="https://api.whatsapp.com/send/?phone=553498813100" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <b>Institucional</b>
+        <a href="https://praiaclube.org.br/historia/">História</a>
+        <a href="https://praiaclube.org.br/governanca/">Governança</a>
+        <a href="https://praiaclube.org.br/estatuto-e-regimento/">Estatuto e Regimento</a>
+        <a href="https://praiaclube.org.br/docs/">Transparência</a>
+        <a href="https://praiaclube.org.br/projetos-licitacoes/">Projetos e Licitações</a>
+        <a href="https://praiaclube.org.br/manual-de-marca/">Manual de Marca</a>
+      </div>
+      <div class="foot-col">
+        <b>Esportes</b>
+        <a href="https://praiaclube.org.br/dentil-praia-clube">Vôlei Feminino</a>
+        <a href="https://praiaclube.org.br/praia-clube-uberlandia-volei/">Vôlei Masculino</a>
+        <a href="https://praiaclube.org.br/praia-clube-futsal">Futsal</a>
+        <a href="https://praiaclube.org.br/volei-de-praia/">Vôlei de Praia</a>
+        <a href="https://praiaclube.org.br/escola-de-esportes/">Escola de Esportes</a>
+        <a href="https://praiaclube.org.br/esportes-competitivo/">Esportes Competitivos</a>
+      </div>
+      <div class="foot-col">
+        <b>Atendimento</b>
+        <a href="tel:3432563100">Central: (34) 3256-3100</a>
+        <a href="https://api.whatsapp.com/send/?phone=553498813100">WhatsApp: (34) 9881-3100</a>
+        <a href="https://praiaclube.org.br/ouvidoria/">Ouvidoria</a>
+        <a href="https://praiaclube.org.br/seja-socio/">Seja Sócio</a>
+        <a href="https://praiaclube.org.br/seja-um-patrocinador/">Seja um Patrocinador</a>
+        <a href="https://praiaclube.org.br/tour-virtual/">Tour Virtual</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>©2026 Praia Clube. Todos os direitos reservados. <a href="https://praiaclube.org.br/politica-de-privacidade">Política de Privacidade</a></span>
+      <span>Proposta de redesign — protótipo navegável</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Header shadow on scroll
+const header=document.getElementById('header');
+addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>10));
+
+// Mobile menu
+const burger=document.getElementById('burger'),mmenu=document.getElementById('mmenu');
+burger.addEventListener('click',()=>mmenu.classList.toggle('open'));
+mmenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mmenu.classList.remove('open')));
+
+// Reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Carrossel de anunciantes
+(()=>{
+  const car=document.getElementById('adsCarousel');if(!car)return;
+  const slides=[...car.querySelectorAll('.ads-slide')],dots=document.getElementById('adsDots');
+  let cur=0,timer;
+  slides.forEach((_,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Banner '+(i+1));b.addEventListener('click',()=>go(i,true));dots.appendChild(b)});
+  const db=[...dots.children];
+  function go(i,manual){cur=(i+slides.length)%slides.length;
+    slides.forEach((s,j)=>s.classList.toggle('on',j===cur));
+    db.forEach((d,j)=>d.classList.toggle('on',j===cur));
+    if(manual){clearInterval(timer);start()}}
+  function start(){timer=setInterval(()=>go(cur+1),5000)}
+  car.querySelector('.prev').addEventListener('click',()=>go(cur-1,true));
+  car.querySelector('.next').addEventListener('click',()=>go(cur+1,true));
+  go(0);start();
+})();
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item=btn.parentElement,open=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-a').style.maxHeight=null});
+    if(!open){item.classList.add('open');const a=item.querySelector('.faq-a');a.style.maxHeight=a.scrollHeight+'px'}
+  });
+});
+// Open first FAQ by default
+const first=document.querySelector('.faq-item.open .faq-a');
+if(first)first.style.maxHeight=first.scrollHeight+'px';
+</script>
+</body>
+</html>
